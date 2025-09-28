@@ -1,0 +1,7 @@
+<template>
+  <svg width="56" height="31" viewBox="0 0 56 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M55 15.5C55 15.5 48.8281 16.7513 43.9606 21.6255C41.9161 23.6729 40.5099 26.9211 39.5664 30M55 15.5C55 15.5 48.8281 14.2487 43.9606 9.37448C41.9161 7.3271 40.5099 4.07894 39.5664 1M55 15.5C55 15.5 -21.1964 15.5 1.08054 15.5"
+      stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</template>

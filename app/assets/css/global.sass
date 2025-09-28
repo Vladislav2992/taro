@@ -1,0 +1,81 @@
+@use './vars'
+@use './fonts'
+html, body
+  height: 100%
+  background: vars.$bg-main
+  color: vars.$primary
+  overflow-x: clip
+
+#__nuxt
+  height: 100%
+  position: relative
+  &::before
+    content: ''
+    width: 450px
+    aspect-ratio: 1/1
+    border-radius: 50%
+    filter: blur(250px)
+    background: vars.$bg-light
+    position: absolute
+    top: 40%
+    left: 50%
+    transform: translate(-50%, -50%)
+    pointer-events: none
+.container
+  max-width: 800px
+  margin: 0 auto
+  padding: 0 15px
+h1.title 
+  font-family: 'Gosznak', sans-serif
+.card
+  width: 100px
+  aspect-ratio: 1 / 1.5
+  perspective: 1000px
+  cursor: pointer
+  z-index: 2
+  border-radius: 10px
+  will-change: transform
+  transition: box-shadow .3s, opacity .5s
+  &.reversed
+    transform: rotate(180deg)
+  &.opened
+    .card-inner
+      transform: rotateY(180deg)
+  &-inner
+    transform-style: preserve-3d
+    border-radius: 10px
+    width: 100%
+    height: 100%
+    transition: transform .2s, scale .5s, background .2s
+    cursor: pointer
+    will-change: transform
+    border: 1px solid gray
+  &-front,
+  &-back
+    width: 100%
+    height: 100%
+    position: absolute
+    backface-visibility: hidden
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    border-radius: 10px
+    z-index: -2
+    overflow: hidden
+
+  &-front
+    background-size: cover
+
+  &-back
+    transform: rotateY(180deg)
+    background: white
+    background-size: cover
+    background-position: center
+
+  &-back img,
+  &-front img
+    width: 100%
+    height: 100%
+    object-fit: cover
+    object-position: center
