@@ -2,5 +2,20 @@
 import withNuxt from './.nuxt/eslint.config.mjs'
 
 export default withNuxt(
-  // Your custom configs here
+  module.exports = {
+    extends: 'eslint:recommended',
+    env: {
+      browser: true,
+      es2021: true,
+      node: true
+    },
+    parserOptions: {
+      ecmaVersion: 12,
+      sourceType: 'module'
+    },
+    rules: {
+      quotes: ['error', 'single'],
+      semi: ['error', 'never']
+    }
+  }
 )

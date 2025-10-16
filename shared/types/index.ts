@@ -8,6 +8,10 @@ export interface ICard {
   isReversed?: boolean
 }
 
+export interface IFanCard extends ICard {
+  isAdded?: boolean
+}
+
 export interface ICardPosition {
   index?: number,
   label?: string

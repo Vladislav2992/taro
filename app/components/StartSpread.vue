@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useCardsLayout } from '@/stores/cardsLayouts'
+import { useCardsLayout } from '~/stores/cardsLayouts'
 import { storeToRefs } from 'pinia'
 import { ref, onBeforeMount } from 'vue'
-import type { ICardLayout } from '~/shared/types'
+import type { ICardLayout } from '~~/shared/types'
 
 const { layouts, isLoading } = storeToRefs(useCardsLayout())
 const { fetchLayouts } = useCardsLayout()
-const currentGame = ref<ICardLayout | null>(null)
-const focusedGame = ref<string | null>(null)
+const currentSpread = ref<ICardLayout | null>(null)
+const focusedSpread = ref<string | null>(null)
 
-const choiseGame = (game: ICardLayout) => {
-  currentGame.value = game
-  focusedGame.value = game.id
+const choiseSpread = (spread: ICardLayout) => {
+  currentSpread.value = spread
+  focusedSpread.value = spread.id
 }
 
 onBeforeMount(async () => {
@@ -22,9 +22,9 @@ onBeforeMount(async () => {
 <template>
   <div class="">
     <div class="flex items-center justify-center gap-2 mb-8">
-      <NuxtImg src="/cards/fool.avif" class="preview-card"/>
-      <NuxtImg src="/cards/empress.avif" class="preview-card"/>
-      <NuxtImg src="/cards/hierophant.avif" class="preview-card"/>
+      <img src="/cards/fool.avif" class="preview-card" >
+      <img src="/cards/empress.avif" class="preview-card" >
+      <img src="/cards/hierophant.avif" class="preview-card" >
     </div>
 
     <h1 class="title uppercase font-bold text-3xl text-center mb-6">Раскрой тайны своего пути <br>Спроси у карт</h1>
@@ -35,19 +35,19 @@ onBeforeMount(async () => {
         v-for="layout in layouts"
         v-else
         :key="layout.id"
-        :class="['layout', { focused : layout.id === focusedGame }]"
-        @click="choiseGame(layout)"
+        :class="['layout', { focused : layout.id === focusedSpread }]"
+        @click="choiseSpread(layout)"
       >
         {{ layout.name }}
       </div>
     </div>
 
-    <div v-if="currentGame" class="description mt-20">
+    <div v-if="currentSpread" class="description mt-20">
       <div class="mb-5">
-        {{ currentGame.description }}
+        {{ currentSpread.description }}
       </div>
       <NuxtLink 
-        :to="`games/${currentGame.id}`"
+        :to="`spreads/${currentSpread.id}`"
         class="flex items-center justify-center gap-2 opacity-50 hover:opacity-100 transition-opacity"
         >
         Далее <IconArrow />
