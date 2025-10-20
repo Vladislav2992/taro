@@ -101,15 +101,13 @@ onBeforeMount(async () => {
       @add-to-playground="addToPlayground"
     />
 
-    <button v-if="isComplete" @click="getInterpretation" class="py-2 px-4 border rounded-2xl">
-      Узнать подробнее
-    </button>
+    <div v-if="isComplete && !interpretation" class="">
+      <button @click="getInterpretation" class="py-2 px-4 border rounded-2xl">
+        Узнать подробнее
+      </button>
+    </div>
 
-    <!-- <div v-if="interpretation" class="whitespace-break-spaces">
-      {{ interpretation }}
-    </div> -->
-
-      <SpreadInterpretation v-if="interpretation" :content="interpretation"/>
+    <SpreadInterpretation v-if="interpretation" :content="interpretation"/>
 
     <Transition name="modal">
       <CardModal
