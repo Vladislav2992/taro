@@ -10,12 +10,12 @@ const spreadId = route.params.id
 const currentSpread = ref<ICardLayout | null>(null)
 const { fetchLayouts } = useCardsLayout()
 const { cards } = storeToRefs(useCardsStore())
-const { isLoading, interpretation } = useInterpretation() //generateInterpretation
+const { isLoading, interpretation, generateInterpretation } = useInterpretation()
 const cardsFan = ref<IFanCard[]>([])
 const selectedCards = ref<ICard[]>([])
-
 const cardDatails = ref<ICard | null>(null)
 const selectedCardPosition = ref<number | null>(null)
+
 const selectedCardPositionValue = computed((): string => {
   if (typeof selectedCardPosition.value !== 'number' || !currentSpread.value) return ''
 
@@ -37,14 +37,16 @@ const addToPlayground = async (card: ICard) => {
   selectedCards.value.push(card)
   cardsFan.value[index].isAdded = true
 
-  if (isComplete.value) {
-    // await generateInterpretation(
-    //   selectedCards.value,
-    //   currentSpread.value.name,
-    //   'Что означает этот расклад?'
-    // )
-    cardsFan.value = []
-  }
+  if (isComplete.value) cardsFan.value = []
+}
+
+const getInterpretation = async () => {
+  if (!selectedCards?.value || !currentSpread?.value) return 
+    await generateInterpretation(
+      selectedCards.value,
+      currentSpread.value.name,
+      'Что означает этот расклад?'
+    )
 }
 
 const handleReset: () => void = () => {
@@ -99,13 +101,15 @@ onBeforeMount(async () => {
       @add-to-playground="addToPlayground"
     />
 
-    <button v-if="isComplete" class="py-2 px-4 border rounded-2xl">
+    <button v-if="isComplete" @click="getInterpretation" class="py-2 px-4 border rounded-2xl">
       Узнать подробнее
     </button>
 
-    <div v-if="interpretation" class="whitespace-break-spaces">
+    <!-- <div v-if="interpretation" class="whitespace-break-spaces">
       {{ interpretation }}
-    </div>
+    </div> -->
+
+      <SpreadInterpretation v-if="interpretation" :content="interpretation"/>
 
     <Transition name="modal">
       <CardModal

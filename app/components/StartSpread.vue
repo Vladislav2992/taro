@@ -29,7 +29,7 @@ onBeforeMount(async () => {
 
     <h1 class="title uppercase font-bold text-3xl text-center mb-6">Раскрой тайны своего пути <br>Спроси у карт</h1>
 
-    <div class="flex flex-wrap gap-3">
+    <div class="flex flex-wrap gap-3 mb-5">
       <span v-if="isLoading" class="text-center">Loading...</span>
       <div
         v-for="layout in layouts"
@@ -42,7 +42,7 @@ onBeforeMount(async () => {
       </div>
     </div>
 
-    <div v-if="currentSpread" class="description mt-20">
+    <div v-if="currentSpread" class="description">
       <div class="mb-5">
         {{ currentSpread.description }}
       </div>

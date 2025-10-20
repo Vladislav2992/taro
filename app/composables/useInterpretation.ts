@@ -24,9 +24,7 @@ export const useInterpretation = () => {
           question
         }
       })
-
       interpretation.value = data as string
-
     } catch (err) {
       console.error('Interpretation error:', err)
       error.value = 'Ошибка при генерации интерпретации'

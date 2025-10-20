@@ -65,7 +65,7 @@ onMounted(() => {
   align-items: center
   justify-content: center
   z-index: 999
-  background: rgba(255,255,255, .9)
+  background: #433a40d1
 .loader-content
   height: fit-content
   overflow: hidden

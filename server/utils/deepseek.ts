@@ -11,12 +11,12 @@ export const generateDeepSeekInterpretation = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || process.env.DEEPSEEK_API_KEY}`,
-      'HTTP-Referer': 'http://localhost:3000',
+      'Authorization': `Bearer ${process.env.API_KEY || process.env.DEEPSEEK_API_KEY}`,
       'X-Title': 'Tarot App'
     },
     body: JSON.stringify({
-      model: 'deepseek/deepseek-chat-v3.1:free',
+      // model: 'z-ai/glm-4.5-air:free',
+      model: 'tngtech/deepseek-r1t2-chimera:free',
       messages: [
         {
           role: 'system',
@@ -27,7 +27,9 @@ export const generateDeepSeekInterpretation = async (
           content: prompt
         }
       ],
-      max_tokens: 1500,
+      stream: false,
+      max_tokens: 4096,
+      reasoning: { "exclude": false },
       temperature: 0.7
     })
   })
@@ -61,6 +63,6 @@ ${cards.map((card, index) =>
 4. Практические рекомендации
 5. Возможные предостережения
 
-Дай развернутую интерпретацию на русском языке.
+Дай развернутую интерпретацию на русском языке, сделай акцент на выводе, используй для ответа максимум 3000 токенов
 `
 }
