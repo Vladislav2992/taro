@@ -72,6 +72,15 @@ onBeforeMount(async () => {
   currentSpread.value = data[0]
   cardsFan.value = shuffleCards([...cards.value]).slice(0, 15)
 })
+
+const user = ref(null)
+
+onMounted(() => {
+  const tg = (window as any).Telegram?.WebApp
+  if (tg?.initDataUnsafe?.user) {
+    user.value = tg.initDataUnsafe.user
+  }
+})
 </script>
 
 <template>

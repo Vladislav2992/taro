@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [
       tailwindcss(),
+      '~/plugins/telegram.client.ts'
     ],
   },
 })
