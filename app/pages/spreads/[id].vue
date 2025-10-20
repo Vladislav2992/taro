@@ -76,10 +76,23 @@ onBeforeMount(async () => {
 const user = ref(null)
 
 onMounted(() => {
+  if (process.dev && !(window as any).Telegram) {
+    (window as any).Telegram = {
+      WebApp: {
+        initDataUnsafe: {
+          user: { id: 111, first_name: 'Test', username: 'dev_user' }
+        },
+        ready: () => console.log('Mock WebApp ready'),
+        expand: () => console.log('Mock expand')
+      }
+    }
+  }
+
   const tg = (window as any).Telegram?.WebApp
   if (tg?.initDataUnsafe?.user) {
     user.value = tg.initDataUnsafe.user
   }
+  console.log('user is ', user.value)
 })
 </script>
 
