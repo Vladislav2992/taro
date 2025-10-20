@@ -9,10 +9,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/eslint', '@nuxt/fonts', '@pinia/nuxt', '@nuxt/image'],
   css: ['~/assets/css/main.css', '~/assets/css/global.sass'],
+  plugins: ['~~/plugins/telegram.client.ts'],
   vite: {
     plugins: [
-      tailwindcss(),
-      '~/plugins/telegram.client.ts'
+      tailwindcss(),      
     ],
   },
 })
