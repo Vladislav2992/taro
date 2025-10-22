@@ -2,7 +2,7 @@
 import type { ICard, ICardLayout } from '~~/shared/types'
 
 interface IPlaygroundProps {
-    spread: ICardLayout
+    spread: ICardLayout | null
     selectedCards: ICard[]
 }
 
@@ -19,9 +19,10 @@ const cardsDetails = (card: ICard, index: number) => {
       class="relative w-full max-w-4xl h-[50vh] border border-dashed rounded-xl"
     >
       <CardItem
+        v-if="spread"
         v-for="(card, i) in selectedCards"
         :key="card.id"
-        :card="card"        
+        :card="card"      
         :class="[
           'absolute transition-all duration-500 translate-[-50%] thumb opened',
           { reversed: card.isReversed },
@@ -35,6 +36,7 @@ const cardsDetails = (card: ICard, index: number) => {
       />
 
       <div
+        v-if="spread"
         v-for="n in spread.cardsCount"
         :key="'slot-' + n"
         class="absolute pointer-events-none opacity-30 border border-dashed rounded-md card thumb"

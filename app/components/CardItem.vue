@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ICard } from '~~/types'
+import type { ICard } from '~~/shared/types'
 
-defineProps<{
+const props = defineProps<{
   card: ICard
 }>()
 const emit = defineEmits(['action'])
@@ -19,5 +19,3 @@ const emit = defineEmits(['action'])
     </div>
   </div>
 </template>
-
-<style lang="sass" scoped></style>

@@ -7,7 +7,6 @@ interface ICardModalProps {
 }
 
 defineProps<ICardModalProps>()
-const isOpened = ref<boolean>(true)
 
 const emit = defineEmits(['close'])
 const handleBackdropClick = (event: MouseEvent) => {
@@ -58,4 +57,11 @@ const handleBackdropClick = (event: MouseEvent) => {
     width: 100%
     height: 100%
     background: #433a40f0
+.modal-enter-active,
+.modal-leave-active
+  transition: opacity .2s
+
+.modal-enter-from,
+.modal-leave-to
+  opacity: 0
 </style>

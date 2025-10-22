@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { IFanCard } from '~~/shared/types';
 
-
 interface IFanCardsProps {
     cards: IFanCard[]
-    isLoading: boolean
 }
 
 defineProps<IFanCardsProps>()
@@ -20,7 +18,6 @@ const addCard = (id: number) => {
       <CardItem
           v-for="card in cards" :key="card.id" :card="card" :class="[
           'shuffled',
-          { 'opacity-50 pointer-events-none': isLoading },
           { added: card.isAdded },
         ]" @action="addCard" />
     </div>
@@ -29,7 +26,7 @@ const addCard = (id: number) => {
 <style lang="sass" scoped>
 $cards: 15
 $delay-step: 0.03s
-$shuffle-count: 1
+$shuffle-count: 4
 $fan-angle: 160deg
 
 .card

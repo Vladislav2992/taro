@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const { amount, description, telegramId, spreadName } = body
+  const { amount, description } = body
 
   const payment = await axios.post(
     'https://api.yookassa.ru/v3/payments',
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
       amount: { value: amount, currency: 'RUB' },
       confirmation: {
         type: 'redirect',
-        return_url: `https://taro-bice.vercel.app/spreads/${spreadName}`
+        return_url: `https://taro-bice.vercel.app/result`
       },
       capture: true,
       description
