@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ICard } from '~~/shared/types'
 
-const props = defineProps<{
+defineProps<{
   card: ICard
 }>()
 const emit = defineEmits(['action'])

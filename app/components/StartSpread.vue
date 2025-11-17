@@ -15,7 +15,7 @@ const choiseSpread = (spread: ICardLayout) => {
 }
 
 onBeforeMount(async () => {
-  await fetchLayouts()
+  await fetchLayouts() 
 })
 </script>
 
@@ -29,7 +29,11 @@ onBeforeMount(async () => {
 
     <h1 class="title uppercase font-bold text-3xl text-center mb-6">Раскрой тайны своего пути <br>Спроси у карт</h1>
 
-    <div class="flex flex-wrap gap-3 mb-5">
+    <p class="text-center mb-5">
+      Получите ответы на свои вопросы с помощью древнего искусства Таро. <br> 
+      <strong>Выберите расклад ниже</strong>, чтобы начать путешествие к самопознанию.
+    </p>
+    <div class="flex flex-wrap justify-center gap-2 mb-5">
       <span v-if="isLoading" class="text-center">Loading...</span>
       <div
         v-for="layout in layouts"
@@ -50,7 +54,7 @@ onBeforeMount(async () => {
         :to="`spreads/${currentSpread.id}`"
         class="flex items-center justify-center gap-2 opacity-50 hover:opacity-100 transition-opacity"
         >
-        Далее <IconArrow />
+        Начать <IconArrow />
       </NuxtLink>
     </div>
   </div>
@@ -65,6 +69,7 @@ onBeforeMount(async () => {
   width: fit-content
   cursor: pointer
   transition: color .2s, border-color .2s
+  font-size: 14px
   &:hover
     border-color: $accent
     color: $accent
@@ -73,19 +78,20 @@ onBeforeMount(async () => {
     color: $accent
 .preview-card
   position: relative
-  width: 90px
-  height: 140px
+  height: 120px
+  aspect-ratio: 1 / 1.6
   position: relative
   border-radius: 5px
+  box-shadow: -4px 4px 4px rgba(0, 0, 0, .1)
   &:nth-child(1)
     z-index: 3
-    transform: rotate(-30deg) translate(36px, 36px)
+    transform: rotate(-30deg) translate(25px, 30px)
     // animation: first-card 3s infinite
   &:nth-child(2)
     z-index: 2
   &:nth-child(3)
     z-index: 1
-    transform: rotate(30deg) translate(-34px, 37px)
+    transform: rotate(30deg) translate(-25px, 30px)
     // animation: second-card 3s infinite
 @keyframes first-card
   0% 

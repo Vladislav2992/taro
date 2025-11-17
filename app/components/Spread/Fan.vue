@@ -42,6 +42,7 @@ $fan-angle: 160deg
   position: absolute
   left: 50%
   bottom: 15%
+  transform: translateX(200%)
   transform-origin: bottom center
   animation-fill-mode: forwards
   will-change: transform
@@ -77,7 +78,7 @@ $fan-angle: 160deg
     transform: translateX(125%) rotate(8deg)
   100%
     transform: translateX(-50%)
-    z-index: -1
+    z-index: 0
 
 @keyframes rotate
   50%

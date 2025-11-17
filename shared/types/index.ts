@@ -24,7 +24,7 @@ export interface ICardLayout {
   id: string,
   name: string,
   description: string,
-  type: string,
+  type?: string,
   cardsCount: number,
   positions?: ICardPosition[]
 }

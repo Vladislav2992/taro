@@ -2,7 +2,6 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import type { ICardLayout } from '~~/shared/types'
-
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export const useCardsLayout = defineStore('cardsLayouts', () => {

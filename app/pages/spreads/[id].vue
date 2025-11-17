@@ -2,7 +2,6 @@
 import { onMounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { shuffleCards } from '~/composables/shuffleCards'
-import { useCardsStore } from '@/stores/cardsData'
 import type { ICard, IFanCard } from '~~/shared/types'
 
 const route = useRoute()
@@ -10,7 +9,7 @@ const spreadId = route.params.id
 
 const { fetchLayouts } = useCardsLayout()
 const { cards } = storeToRefs(useCardsStore())
-const { setSelectedCard, resetSelectedCards, setCurrentSpread  } = useCurrentSpreadStore()
+const { setSelectedCard, setCurrentSpread, resetSelectedCards  } = useCurrentSpreadStore()
 const { selectedCardsList: selectedCards, currentSpread } = storeToRefs(useCurrentSpreadStore())
 
 const { showCardDescription, closeCardDescription } = useCardDatailsModalStore()
@@ -42,16 +41,9 @@ const addToPlayground = async (card: ICard) => {
   if (isComplete.value) cardsFan.value = []
 }
 
-const handleReset: () => void = () => {
-  resetSelectedCards()
-  cardsFan.value = []
-  setTimeout(() => {
-    cardsFan.value = shuffleCards([...cards.value]).slice(0, 15)
-  }, 300)
-}
-
 onMounted(async () => {
   localStorage.clear()
+  resetSelectedCards()
 
   const data = await fetchLayouts(`id=${spreadId}`)
   setCurrentSpread(data[0])
@@ -76,43 +68,42 @@ const paySpread = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-6 h-full w-full">
-    <h1 v-if="currentSpread" class="text-2xl font-bold">
+  <div class="flex flex-col items-center gap-6 h-full w-full relative">
+    <NuxtLink to="/" class="absolute rotate-180 left-0 opacity-50 hover:opacity-100 transition-opacity">
+      <IconArrow />
+    </NuxtLink>
+
+    <h1 v-if="currentSpread" class="title text-2xl font-bold">
       {{ currentSpread.name }}
     </h1>
 
-    <SpreadPlaygroundArea
-      v-if="currentSpread"
-      :selected-cards="selectedCards"
-      :spread="currentSpread"
-      @card-click="showCardDescription"
-    />
+    <SpreadPlaygroundArea v-if="currentSpread" :selected-cards="selectedCards" :spread="currentSpread"
+      @card-click="showCardDescription" />
 
-    <SpreadNavigation
-      :selected-count="selectedCards.length"
-      :total-cards="currentSpread?.cardsCount || 0"
-      @reset="handleReset"
-    />
+    <span v-if="currentSpread?.cardsCount" class="text-sm opacity-70">{{ selectedCards.length }}/{{ currentSpread?.cardsCount || 0 }}</span>
 
-    <SpreadFan
-      v-if="cardsFan.length"
-      :cards="cardsFan"
-      @add-to-playground="addToPlayground"
-    />
-
-    <div v-if="isComplete" class="">
+    <div v-if="isComplete" class="flex flex-col gap-4">
+      <div class="text-center">
+        Вы&nbsp;можете ознакомиться со&nbsp;значением карты, нажав на&nbsp;неё
+        или получить развернутое трактование<br>
+        за 99 ₽, но прежде ознакомьтесь с  <br>
+        <NuxtLink to="/" class="underline hover:no-underline">пользовательским соглашением</NuxtLink> 
+      </div>
       <button @click="paySpread" class="py-2 px-4 border rounded-2xl">
         Узнать подробнее
       </button>
     </div>
 
+    <div v-else class="text-center">
+      Выберите карты из веера и они займут свои позиции в раскладе<br>
+      Коснитесь открытой карты, чтобы узнать её значение.
+    </div>
+
+    <SpreadFan v-if="cardsFan.length" :cards="cardsFan" @add-to-playground="addToPlayground" />
+
     <Transition name="modal">
-      <CardModal
-        v-if="cardDetails"
-        :card="cardDetails"
-        :position-value="selectedCardPositionValue"
-        @close="closeCardDescription"
-      />
+      <CardModal v-if="cardDetails" :card="cardDetails" :position-value="selectedCardPositionValue"
+        @close="closeCardDescription" />
     </Transition>
   </div>
 </template>

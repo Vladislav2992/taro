@@ -16,7 +16,7 @@ const cardsDetails = (card: ICard, index: number) => {
 
 <template>
     <div      
-      class="relative w-full max-w-4xl h-[50vh] border border-dashed rounded-xl"
+      class="relative w-full max-w-4xl h-[45vh] border border-dashed rounded-xl"
     >
       <CardItem
         v-if="spread"
@@ -24,7 +24,7 @@ const cardsDetails = (card: ICard, index: number) => {
         :key="card.id"
         :card="card"      
         :class="[
-          'absolute transition-all duration-500 translate-[-50%] thumb opened',
+          'absolute transition-all duration-500 translate-[-50%] thumb opened shadow',
           { reversed: card.isReversed },
         ]"
         :style="{
@@ -54,4 +54,6 @@ const cardsDetails = (card: ICard, index: number) => {
 <style lang="sass" scoped>
 .thumb
     width: clamp(50px, 15vw, 80px)
+.shadow 
+  box-shadow: -4px 4px 4px rgba(0,0,0, .1)
 </style>

@@ -43,14 +43,14 @@ onMounted(async () => {
 </script>
 
 <template>
-    <TextPreloader v-if="isLoading" />
-
     <SpreadPlaygroundArea 
         :selected-cards="selectedCardsList"
         :spread="currentSpread"
         @card-click="showCardDescription"
     />
 
+    <div v-if="!interpretation" class="mt-5">Формируем ответ, это займет немного времени</div>
+    <TextPreloader v-if="isLoading" />
     <SpreadInterpretation v-if="interpretation" :content="interpretation"/>
 
     <Transition name="modal">
