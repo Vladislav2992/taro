@@ -90,7 +90,7 @@ const paySpread = async () => {
         за 99 ₽, но прежде ознакомьтесь с  <br>
         <button class="underline hover:no-underline" @click="isPolicyOpen = true">пользовательским соглашением</button>
       </div>
-      <button @click="paySpread" class="py-2 px-4 border rounded-2xl">
+      <button @click="paySpread" class="py-2 px-4 border rounded-2xl w-fit mx-auto">
         Узнать подробнее
       </button>
     </div>

@@ -11,13 +11,13 @@ const html = md.render(props.content)
 </script>
 
 <template>
-    <div v-html="html" class="interpretation"></div>
+    <div v-html="html" class="interpretation py-10"></div>
 </template>
 
 <style lang="sass">
 .interpretation
     hr
-        height: 12px ip !important
+        height: 12px !important
         color: transparent
     p,
     ul,

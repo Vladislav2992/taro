@@ -12,6 +12,7 @@ export const generateDeepSeekInterpretation = async (
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${process.env.API_KEY || process.env.DEEPSEEK_API_KEY}`,
+      'HTTP-Referer': 'https://taro-bice.vercel.app/',
       'X-Title': 'Tarot App'
     },
     body: JSON.stringify({

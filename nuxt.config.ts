@@ -1,6 +1,11 @@
 import tailwindcss from "@tailwindcss/vite"
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg', href: '/icon.svg' }]
+    }
+  },
   ssr: false,
   runtimeConfig: {
     deepseekApiKey: process.env.DEEPSEEK_API_KEY,
