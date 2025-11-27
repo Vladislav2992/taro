@@ -1,0 +1,3 @@
+<template>
+    <DocumentsAgreement />
+</template>

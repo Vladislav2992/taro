@@ -1,0 +1,3 @@
+<template>
+    <DocumentsPolicy />
+</template>

@@ -47,7 +47,7 @@ onBeforeMount(async () => {
     </div>
 
     <div v-if="currentSpread" class="description">
-      <div class="mb-5">
+      <div class="mb-5 text-center">
         {{ currentSpread.description }}
       </div>
       <NuxtLink 
@@ -78,7 +78,7 @@ onBeforeMount(async () => {
     color: $accent
 .preview-card
   position: relative
-  height: 120px
+  height: clamp(100px, 12vw, 120px)
   aspect-ratio: 1 / 1.6
   position: relative
   border-radius: 5px

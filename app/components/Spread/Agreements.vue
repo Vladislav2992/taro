@@ -1,0 +1,122 @@
+<script setup lang="ts">
+const isPolicyOpen = ref<boolean>(false)
+const isAgreementOpen = ref<boolean>(false)
+const isOfertaOpen = ref<boolean>(false)
+
+const isPolicyChecked = ref<boolean>(true)
+const isAgreementChecked = ref<boolean>(true)
+const isOfertaChecked = ref<boolean>(true)
+
+const isModalOpen = computed(
+  () => isPolicyOpen.value || isAgreementOpen.value || isOfertaOpen.value
+)
+const closePolicyModal = () => {
+  isPolicyOpen.value = false
+  isAgreementOpen.value = false
+  isOfertaOpen.value = false
+}
+
+defineEmits(['paySpread'])
+</script>
+
+<template>
+  <div class="flex flex-col gap-4">
+    <div class="text-center">
+      Вы&nbsp;можете ознакомиться со&nbsp;значением карты, нажав на&nbsp;неё<br>
+      или получить развернутое трактование от ИИ<br>
+      После успешной оплаты нажмите "Вернуться на сайт"<br>
+      и Вы получите детальный разбор
+    </div>
+    <button
+      @click="$emit('paySpread')"
+      class="py-2 px-4 border rounded-2xl w-fit mx-auto transition-opacity disabled:opacity-50 disabled:pointer-events-none"
+      :disabled="!isPolicyChecked || !isAgreementChecked || !isOfertaChecked"
+    >
+      Узнать подробнее за 99 ₽
+    </button>
+
+    <div class="checkbox-wrapper">
+      <input
+        type="checkbox"
+        name=""
+        id="agreement"
+        v-model="isAgreementChecked"
+      />
+      <label for="agreement">я даю согласие на </label>
+      <span
+        class="underline hover:no-underline"
+        @click="isAgreementOpen = true"
+      >
+      обработку персональных данных</span>
+    </div>
+    <div class="checkbox-wrapper">
+      <input
+        type="checkbox"
+        name=""
+        id="privat-policy"
+        v-model="isPolicyChecked"
+      />
+      <label for="privat-policy">я ознакомлен с </label>
+      <span
+        class="underline hover:no-underline"
+        @click="isPolicyOpen = true"
+      >
+      политикой конфиденциальности</span>
+    </div>
+    <div class="checkbox-wrapper">
+      <input
+        type="checkbox"
+        name=""
+        id="oferta"
+        v-model="isOfertaChecked"
+      />
+      <label for="oferta">я ознакомлен с </label>
+      <span
+        class="underline hover:no-underline"
+        @click="isOfertaOpen = true"
+      >
+      публичной офертой</span>
+    </div>
+  </div>
+
+  <Transition name="modal">
+    <AppModal v-if="isModalOpen" @close="closePolicyModal">
+      <DocumentsPolicy v-if="isPolicyOpen" />
+      <DocumentsAgreement v-else-if="isAgreementOpen" />
+      <DocumentsOferta v-else-if="isOfertaOpen" />
+    </AppModal>
+  </Transition>
+</template>
+
+<style lang="sass" scoped>
+.checkbox-wrapper
+    margin-bottom: 0px
+    input[type="checkbox"]
+        display: none
+        &:checked + label::after
+            transform: scale(1)
+                
+    label
+        position: relative
+        padding-left: 30px
+        &::before
+            content: ''
+            position: absolute
+            left: 0
+            top: 3px
+            width: 20px
+            height: 20px
+            border: 1px solid #fff
+            border-radius: 8%
+        &::after
+            content: ''
+            background: url('/checked.svg') no-repeat center
+            width: 20px
+            height: 24px
+            color: inherit
+            position: absolute
+            top: -5px
+            left: 3px
+            transform: scale(0)
+            transition: transform .1s
+</style>

@@ -15,8 +15,7 @@ const { selectedCardsList: selectedCards, currentSpread } = storeToRefs(useCurre
 const { showCardDescription, closeCardDescription } = useCardDatailsModalStore()
 const { cardDetails, selectedCardPosition } = storeToRefs(useCardDatailsModalStore())
 const cardsFan = ref<IFanCard[]>([])
-const isPolicyOpen = ref<boolean>(false)
-const closePolicyModal = () => isPolicyOpen.value = false
+
 
 const selectedCardPositionValue = computed((): string => {
   if (typeof selectedCardPosition.value !== 'number' || !currentSpread.value) return ''
@@ -83,17 +82,7 @@ const paySpread = async () => {
 
     <span v-if="currentSpread?.cardsCount" class="text-sm opacity-70">{{ selectedCards.length }}/{{ currentSpread?.cardsCount || 0 }}</span>
 
-    <div v-if="isComplete" class="flex flex-col gap-4">
-      <div class="text-center">
-        Вы&nbsp;можете ознакомиться со&nbsp;значением карты, нажав на&nbsp;неё<br>
-        или получить развернутое трактование<br>
-        за 99 ₽, но прежде ознакомьтесь с  <br>
-        <button class="underline hover:no-underline" @click="isPolicyOpen = true">пользовательским соглашением</button>
-      </div>
-      <button @click="paySpread" class="py-2 px-4 border rounded-2xl w-fit mx-auto">
-        Узнать подробнее
-      </button>
-    </div>
+    <SpreadAgreements v-if="isComplete" @paySpread="paySpread" />
 
     <div v-else class="text-center">
       Выберите карты из веера и они займут свои позиции в раскладе<br>
@@ -102,11 +91,7 @@ const paySpread = async () => {
 
     <SpreadFan v-if="cardsFan.length" :cards="cardsFan" @add-to-playground="addToPlayground" />
 
-    <Transition name="modal">
-      <AppModal v-if="isPolicyOpen" @close="closePolicyModal">
-        <Policy />
-      </AppModal>
-    </Transition>
+
 
     <Transition name="modal">
       <CardModal v-if="cardDetails" :card="cardDetails" :position-value="selectedCardPositionValue"
