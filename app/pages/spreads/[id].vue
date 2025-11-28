@@ -51,9 +51,9 @@ const paySpread = async () => {
       description: currentSpread.value?.description,
     }
   })
-
-  localStorage.setItem('paymentId', res.id)
-  window.location.href = res.confirmation.confirmation_url  
+  if (!res) return
+  localStorage.setItem('paymentId', res?.id)
+  window.location.href = res?.confirmation?.confirmation_url || '/'
 }
 
 onMounted(async () => {

@@ -6,56 +6,33 @@ import { YooCheckout, ICreatePayment } from '@a2seven/yoo-checkout'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { amount, description } = body
-  const checkout = new YooCheckout({ 
+
+  const checkout = new YooCheckout({
     shopId: process.env.SHOP_ID!,
-    secretKey: process.env.SHOP_SECRET_KEY!
-  });
+    secretKey: process.env.SHOP_SECRET_KEY!,
+  })
 
   const idempotenceKey = crypto.randomUUID()
 
   const createPayload: ICreatePayment = {
-      amount: {
-          value: "2",
-          currency: 'RUB'
-      },
-      payment_method_data: {
-          type: 'bank_card'
-      },
-      confirmation: {
-          type: 'redirect',
-          return_url: 'https://taro-bice.vercel.app/result'
-      }
-  };
-
-  try {
-      const payment = await checkout.createPayment(createPayload, idempotenceKey);
-      console.log(payment)
-      return payment
-  } catch (error) {
-      console.error(error);
+    amount: {
+      value: '2',
+      currency: 'RUB',
+    },
+    payment_method_data: {
+      type: 'bank_card',
+    },
+    description,
+    confirmation: {
+      type: 'redirect',
+      return_url: 'https://taro-bice.vercel.app/result',
+    },
   }
 
-  // const payment = await axios.post(
-  //   'https://api.yookassa.ru/v3/payments',
-  //   {
-  //     amount: { value: amount, currency: 'RUB' },
-  //     confirmation: {
-  //       type: 'redirect',
-  //       return_url: `https://taro-bice.vercel.app/result`
-  //     },
-  //     capture: true,
-  //     description
-  //   },
-  //   {
-  //     auth: {
-  //       username: process.env.SHOP_ID!,
-  //       password: process.env.SHOP_SECRET_KEY!
-  //     },
-  //     headers: {
-  //       'Idempotence-Key': crypto.randomUUID()
-  //     }
-  //   }
-  // )
-
-  // return payment.data
+  try {
+    const payment = await checkout.createPayment(createPayload, idempotenceKey)
+    return payment
+  } catch (error) {
+    console.error(error)
+  }
 })
