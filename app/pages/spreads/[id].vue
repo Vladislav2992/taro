@@ -16,7 +16,6 @@ const { showCardDescription, closeCardDescription } = useCardDatailsModalStore()
 const { cardDetails, selectedCardPosition } = storeToRefs(useCardDatailsModalStore())
 const cardsFan = ref<IFanCard[]>([])
 
-
 const selectedCardPositionValue = computed((): string => {
   if (typeof selectedCardPosition.value !== 'number' || !currentSpread.value) return ''
 
@@ -41,15 +40,6 @@ const addToPlayground = async (card: ICard) => {
   if (isComplete.value) cardsFan.value = []
 }
 
-onMounted(async () => {
-  localStorage.clear()
-  resetSelectedCards()
-
-  const data = await fetchLayouts(`id=${spreadId}`)
-  setCurrentSpread(data[0])
-  cardsFan.value = shuffleCards([...cards.value]).slice(0, 15)
-})
-
 const paySpread = async () => {
   localStorage.setItem('spread', JSON.stringify(currentSpread.value))
   localStorage.setItem('cards', JSON.stringify(selectedCards.value))
@@ -65,6 +55,20 @@ const paySpread = async () => {
   localStorage.setItem('paymentId', res.id)
   window.location.href = res.confirmation.confirmation_url  
 }
+
+onMounted(async () => {
+  localStorage.clear()
+  resetSelectedCards()
+
+  const data = await fetchLayouts(`id=${spreadId}`)
+  setCurrentSpread(data[0])
+  cardsFan.value = shuffleCards([...cards.value]).slice(0, 15)
+})
+
+useSeoMeta({
+  title: currentSpread.value?.name,
+  description: currentSpread.value?.description,
+})
 </script>
 
 <template>
@@ -90,8 +94,6 @@ const paySpread = async () => {
     </div>
 
     <SpreadFan v-if="cardsFan.length" :cards="cardsFan" @add-to-playground="addToPlayground" />
-
-
 
     <Transition name="modal">
       <CardModal v-if="cardDetails" :card="cardDetails" :position-value="selectedCardPositionValue"

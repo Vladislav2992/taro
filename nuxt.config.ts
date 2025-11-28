@@ -6,7 +6,7 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/svg', href: '/icon.svg' }]
     }
   },
-  ssr: false,
+  ssr: true,
   runtimeConfig: {
     deepseekApiKey: process.env.DEEPSEEK_API_KEY,
   },

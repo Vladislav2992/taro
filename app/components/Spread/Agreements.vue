@@ -19,8 +19,13 @@ const closePolicyModal = () => {
 const emit = defineEmits(['paySpread'])
 
 const goToPayment = () => {
-  if (!isPolicyChecked.value || !isAgreementChecked.value || !isOfertaChecked.value) return
-  
+  if (
+    !isPolicyChecked.value ||
+    !isAgreementChecked.value ||
+    !isOfertaChecked.value
+  )
+    return
+
   emit('paySpread')
 }
 </script>
@@ -28,14 +33,14 @@ const goToPayment = () => {
 <template>
   <div class="flex flex-col gap-4">
     <div class="text-center">
-      Вы&nbsp;можете ознакомиться со&nbsp;значением карты, нажав на&nbsp;неё<br>
-      или получить развернутое трактование от ИИ<br>
-      После успешной оплаты нажмите "Вернуться на сайт"<br>
+      Вы&nbsp;можете ознакомиться со&nbsp;значением карты, нажав на&nbsp;неё<br />
+      или получить развернутое трактование от ИИ<br />
+      После успешной оплаты нажмите "Вернуться на сайт"<br />
       и Вы получите детальный разбор
     </div>
     <button
       @click="goToPayment"
-      class="py-2 px-4 border rounded-2xl w-fit mx-auto transition-opacity disabled:opacity-50 disabled:pointer-events-none"
+      class="py-2 px-4 border rounded-2xl w-fit mx-auto transition-opacity cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
       :disabled="!isPolicyChecked || !isAgreementChecked || !isOfertaChecked"
     >
       Узнать подробнее за 99 ₽
@@ -50,10 +55,11 @@ const goToPayment = () => {
       />
       <label for="agreement">я даю согласие на </label>
       <span
-        class="underline hover:no-underline"
+        class="underline hover:no-underline cursor-pointer"
         @click="isAgreementOpen = true"
       >
-      обработку персональных данных</span>
+        обработку персональных данных</span
+      >
     </div>
     <div class="checkbox-wrapper">
       <input
@@ -64,24 +70,21 @@ const goToPayment = () => {
       />
       <label for="privat-policy">я ознакомлен с </label>
       <span
-        class="underline hover:no-underline"
+        class="underline hover:no-underline cursor-pointer"
         @click="isPolicyOpen = true"
       >
-      политикой конфиденциальности</span>
+        политикой конфиденциальности</span
+      >
     </div>
     <div class="checkbox-wrapper">
-      <input
-        type="checkbox"
-        name=""
-        id="oferta"
-        v-model="isOfertaChecked"
-      />
+      <input type="checkbox" name="" id="oferta" v-model="isOfertaChecked" />
       <label for="oferta">я ознакомлен с </label>
       <span
-        class="underline hover:no-underline"
+        class="underline hover:no-underline cursor-pointer"
         @click="isOfertaOpen = true"
       >
-      публичной офертой</span>
+        публичной офертой</span
+      >
     </div>
   </div>
 
@@ -101,7 +104,6 @@ const goToPayment = () => {
         display: none
         &:checked + label::after
             transform: scale(1)
-                
     label
         position: relative
         padding-left: 30px
