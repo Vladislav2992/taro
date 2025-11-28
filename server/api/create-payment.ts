@@ -18,8 +18,8 @@ export default defineEventHandler(async (event) => {
     },
     {
       auth: {
-        username: process.env.SHOP_ID!,
-        password: process.env.SHOP_SECRET_KEY!
+        shopId: process.env.SHOP_ID!,
+        secretKey: process.env.SHOP_SECRET_KEY!
       },
       headers: {
         'Idempotence-Key': crypto.randomUUID()
