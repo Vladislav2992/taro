@@ -16,12 +16,13 @@ export default defineEventHandler(async (event) => {
 
   const createPayload: ICreatePayment = {
     amount: {
-      value: '2',
+      value: '0.2',
       currency: 'RUB',
     },
     payment_method_data: {
       type: 'bank_card',
     },
+    capture: true,
     description,
     confirmation: {
       type: 'redirect',

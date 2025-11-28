@@ -52,8 +52,7 @@ onMounted(async () => {
 
   if (paymentId) {
     const res = await $fetch(`/api/check-payment?id=${paymentId}`)
-    console.log(res)
-    if (res?.data?.value?.paid) {
+    if (res?.paid) {
       await getInterpretation()
     }
   }
