@@ -4,7 +4,8 @@ import { storeToRefs } from 'pinia'
 import { ref, onBeforeMount } from 'vue'
 import type { ICardLayout } from '~~/shared/types'
 
-const { layouts, isLoading } = storeToRefs(useCardsLayout())
+const isLoading = ref(false)
+const { layouts, isLoading: pending } = storeToRefs(useCardsLayout())
 const { fetchLayouts } = useCardsLayout()
 const currentSpread = ref<ICardLayout | null>(null)
 const focusedSpread = ref<string | null>(null)
@@ -15,7 +16,8 @@ const choiseSpread = (spread: ICardLayout) => {
 }
 
 onBeforeMount(async () => {
-  await fetchLayouts() 
+  await fetchLayouts()
+  isLoading.value = pending.value
 })
 </script>
 

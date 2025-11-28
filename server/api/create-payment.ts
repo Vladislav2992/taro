@@ -1,8 +1,6 @@
 import { defineEventHandler, readBody } from 'h3'
 import { YooCheckout, ICreatePayment } from '@a2seven/yoo-checkout'
 
-// import axios from 'axios'
-
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { amount, description } = body
@@ -16,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   const createPayload: ICreatePayment = {
     amount: {
-      value: '0.2',
+      value: '2',
       currency: 'RUB',
     },
     payment_method_data: {
@@ -32,6 +30,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const payment = await checkout.createPayment(createPayload, idempotenceKey)
+    console.log(payment)
     return payment
   } catch (error) {
     console.error(error)
