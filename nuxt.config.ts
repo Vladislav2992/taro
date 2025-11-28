@@ -12,10 +12,16 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/fonts', '@pinia/nuxt', '@nuxt/image'],
+  modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxt/image'],
   css: ['~/assets/css/main.css', '~/assets/css/global.sass'],
-  plugins: ['~~/plugins/telegram.client.ts'],
   vite: {
+    css: {
+      preprocessorOptions: {
+        sass: {
+          additionalData: '@use "@/assets/css/vars.sass" as *\n'
+        }
+      }
+    },
     plugins: [
       tailwindcss(),      
     ],

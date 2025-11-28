@@ -16,7 +16,13 @@ const closePolicyModal = () => {
   isOfertaOpen.value = false
 }
 
-defineEmits(['paySpread'])
+const emit = defineEmits(['paySpread'])
+
+const goToPayment = () => {
+  if (!isPolicyChecked.value || !isAgreementChecked.value || !isOfertaChecked.value) return
+  
+  emit('paySpread')
+}
 </script>
 
 <template>
@@ -28,7 +34,7 @@ defineEmits(['paySpread'])
       и Вы получите детальный разбор
     </div>
     <button
-      @click="$emit('paySpread')"
+      @click="goToPayment"
       class="py-2 px-4 border rounded-2xl w-fit mx-auto transition-opacity disabled:opacity-50 disabled:pointer-events-none"
       :disabled="!isPolicyChecked || !isAgreementChecked || !isOfertaChecked"
     >
@@ -106,7 +112,7 @@ defineEmits(['paySpread'])
             top: 3px
             width: 20px
             height: 20px
-            border: 1px solid #fff
+            border: 1px solid $primary
             border-radius: 8%
         &::after
             content: ''
