@@ -6,6 +6,7 @@ const { setSelectedCard, setCurrentSpread } = useCurrentSpreadStore()
 const { selectedCardsList, currentSpread } = storeToRefs(useCurrentSpreadStore())
 const { showCardDescription, closeCardDescription } = useCardDatailsModalStore()
 const { cardDetails, selectedCardPosition } = storeToRefs(useCardDatailsModalStore())
+const isPayed = ref<boolean>(false)
 
 const selectedCardPositionValue = computed((): string => {
   if (typeof selectedCardPosition.value !== 'number' || !currentSpread.value) return ''
@@ -53,6 +54,7 @@ onMounted(async () => {
   if (paymentId) {
     const res = await $fetch(`/api/check-payment?id=${paymentId}`)
     if (res?.paid) {
+      isPayed.value = true
       await getInterpretation()
     }
   }
@@ -77,8 +79,11 @@ watch(
     :spread="currentSpread"
     @card-click="showCardDescription"
   />
-
-  <div v-if="!interpretation" class="mt-5">Формируем ответ, это займет немного времени</div>
+  <div v-if="!isPayed" class="mt-5 text-center">
+    Что-то пошло не так <br>
+    Проверьте интернет-соединение или детали платежа
+  </div>
+  <div v-if="!interpretation && isPayed" class="mt-5 text-center">Формируем ответ, это займет немного времени</div>
   <TextPreloader v-if="isLoading" />
   <SpreadInterpretation v-if="interpretation" :content="interpretation" />
 

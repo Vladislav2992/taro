@@ -1,4 +1,12 @@
 <script setup lang="ts">
+
+interface IAgreementsProps {
+  disasbled?: boolean
+  error?: boolean
+}
+
+const props = defineProps<IAgreementsProps>()
+
 const isPolicyOpen = ref<boolean>(false)
 const isAgreementOpen = ref<boolean>(false)
 const isOfertaOpen = ref<boolean>(false)
@@ -6,6 +14,10 @@ const isOfertaOpen = ref<boolean>(false)
 const isPolicyChecked = ref<boolean>(true)
 const isAgreementChecked = ref<boolean>(true)
 const isOfertaChecked = ref<boolean>(true)
+
+const isDisabled = computed(() => {
+  return props.disasbled || !isPolicyChecked.value || !isAgreementChecked.value || !isOfertaChecked.value
+})
 
 const isModalOpen = computed(
   () => isPolicyOpen.value || isAgreementOpen.value || isOfertaOpen.value
@@ -41,11 +53,11 @@ const goToPayment = () => {
     <button
       @click="goToPayment"
       class="py-2 px-4 border rounded-2xl w-fit mx-auto transition-opacity cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
-      :disabled="!isPolicyChecked || !isAgreementChecked || !isOfertaChecked"
+      :disabled="isDisabled"
     >
       Узнать подробнее за 99 ₽
     </button>
-
+    <div v-if="error" class="text-red-500 text-center">Что-то случилось, попробуйте ещё раз</div>
     <div class="checkbox-wrapper">
       <input
         type="checkbox"

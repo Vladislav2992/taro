@@ -3,7 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { shuffleCards } from '~/composables/shuffleCards'
 import type { ICard, IFanCard } from '~~/shared/types'
-
+import type { Payment } from '@a2seven/yoo-checkout'
 const route = useRoute()
 const spreadId = route.params.id
 
@@ -15,6 +15,8 @@ const { selectedCardsList: selectedCards, currentSpread } = storeToRefs(useCurre
 const { showCardDescription, closeCardDescription } = useCardDatailsModalStore()
 const { cardDetails, selectedCardPosition } = storeToRefs(useCardDatailsModalStore())
 const cardsFan = ref<IFanCard[]>([])
+const isPayBtnDisabled = ref(false)
+const isPaymentError = ref(false)
 
 const selectedCardPositionValue = computed((): string => {
   if (typeof selectedCardPosition.value !== 'number' || !currentSpread.value) return ''
@@ -44,16 +46,28 @@ const paySpread = async () => {
   localStorage.setItem('spread', JSON.stringify(currentSpread.value))
   localStorage.setItem('cards', JSON.stringify(selectedCards.value))
   
-  const res = await $fetch('/api/create-payment', {
-    method: 'POST',
-    body: {
-      amount: '99.00',
-      description: currentSpread.value?.description,
-    }
-  })
-  if (!res) return
-  localStorage.setItem('paymentId', res?.id)
-  window.location.href = res?.confirmation?.confirmation_url || '/'
+  isPayBtnDisabled.value = true
+  try {
+      const res: Payment = await $fetch('/api/create-payment', {
+      method: 'POST',
+      body: {
+        amount: '99.00',
+        description: currentSpread.value?.description,
+      }
+    })
+    if (!res) return
+    isPaymentError.value = false
+    localStorage.setItem('paymentId', res?.id)
+    window.location.href = res?.confirmation?.confirmation_url || '/'
+  }
+  catch(error) {
+    console.log('Ошибка оплаты')
+    isPaymentError.value = true
+  }
+  finally {
+    isPayBtnDisabled.value = false
+  }
+
 }
 
 onMounted(async () => {
@@ -86,7 +100,7 @@ useSeoMeta({
 
     <span v-if="currentSpread?.cardsCount" class="text-sm opacity-70">{{ selectedCards.length }}/{{ currentSpread?.cardsCount || 0 }}</span>
 
-    <SpreadAgreements v-if="isComplete" @paySpread="paySpread" />
+    <SpreadAgreements v-if="isComplete" :disasbled="isPayBtnDisabled" :error="isPaymentError" @paySpread="paySpread" />
 
     <div v-else class="text-center">
       Выберите карты из веера и они займут свои позиции в раскладе<br>
