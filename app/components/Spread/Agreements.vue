@@ -55,7 +55,7 @@ const goToPayment = () => {
       class="py-2 px-4 border rounded-2xl w-fit mx-auto transition-opacity cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
       :disabled="isDisabled"
     >
-      Узнать подробнее за 99 ₽
+      Узнать подробнее за 249 ₽
     </button>
     <div v-if="error" class="text-red-500 text-center">Что-то случилось, попробуйте ещё раз</div>
     <div class="checkbox-wrapper">

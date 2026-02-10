@@ -1,5 +1,5 @@
 <template>
-  <div class="py-4 mt-25">
+  <div class="py-4 mt-25 opacity-50">
     <ul class="flex items-center justify-center gap-2.5 mb-3">
         <li class="footer-link">
             <NuxtLink to="/privacy-policy"> Политика <br>конфиденциальности </NuxtLink>
@@ -12,7 +12,7 @@
         </li>
     </ul>
     <div class="flex flex-col items-center text-xs">
-        <span>Сидоров Владислав Владимирович (Самозанятый)</span>
+        <span>Сидоров Владислав Владимирович</span>
         <span>ИНН 165051535815</span>
         <a href="mailto:schu1ts@yandex.ru">schu1ts@yandex.ru</a>
     </div>

@@ -51,7 +51,7 @@ const paySpread = async () => {
       const res: Payment = await $fetch('/api/create-payment', {
       method: 'POST',
       body: {
-        amount: '99.00',
+        amount: '249.00',
         description: currentSpread.value?.description,
       }
     })
