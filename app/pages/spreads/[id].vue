@@ -5,7 +5,9 @@ import { shuffleCards } from '~/composables/shuffleCards'
 import type { ICard, IFanCard } from '~~/shared/types'
 import type { Payment } from '@a2seven/yoo-checkout'
 const route = useRoute()
+const router = useRouter()
 const spreadId = route.params.id
+const telegram = useTelegram()
 
 const { fetchLayouts } = useCardsLayout()
 const { cards } = storeToRefs(useCardsStore())
@@ -45,6 +47,16 @@ const addToPlayground = async (card: ICard) => {
 const paySpread = async () => {
   localStorage.setItem('spread', JSON.stringify(currentSpread.value))
   localStorage.setItem('cards', JSON.stringify(selectedCards.value))
+  if (telegram.isTelegram.value) {
+    if (!telegram.initData.value) {
+      isPaymentError.value = true
+      return
+    }
+    localStorage.setItem('readingMode', 'telegram-free')
+    await router.push('/result')
+    return
+  }
+  localStorage.removeItem('readingMode')
   
   isPayBtnDisabled.value = true
   try {
@@ -71,12 +83,39 @@ const paySpread = async () => {
 }
 
 onMounted(async () => {
-  localStorage.clear()
-  resetSelectedCards()
+  let savedSpreadId: string | undefined
+  try {
+    const savedSpread = localStorage.getItem('spread')
+    savedSpreadId = savedSpread ? JSON.parse(savedSpread)?.id : undefined
+  } catch {
+    savedSpreadId = undefined
+  }
+  const shouldResume = telegram.isTelegram.value
+    && localStorage.getItem('telegramResumeSpread') === '1'
+    && String(savedSpreadId) === String(spreadId)
+  localStorage.removeItem('telegramResumeSpread')
+  if (shouldResume) {
+    try {
+      const cards = JSON.parse(localStorage.getItem('cards') ?? '[]') as ICard[]
+      resetSelectedCards()
+      cards.forEach((card) => setSelectedCard(card))
+    } catch {
+      resetSelectedCards()
+    }
+  } else {
+    resetSelectedCards()
+    for (const key of ['spread', 'cards', 'paymentId', 'interpretation', 'readingMode']) {
+      localStorage.removeItem(key)
+    }
+  }
 
   const data = await fetchLayouts(`id=${spreadId}`)
   setCurrentSpread(data[0])
-  cardsFan.value = shuffleCards([...cards.value]).slice(0, 15)
+  const selectedIds = new Set(selectedCards.value.map((card) => card.id))
+  const remainingCards = cards.value.filter((card) => !selectedIds.has(card.id))
+  cardsFan.value = selectedCards.value.length >= (currentSpread.value?.cardsCount ?? 0)
+    ? []
+    : shuffleCards(remainingCards).slice(0, 15)
 })
 
 useSeoMeta({
@@ -87,7 +126,7 @@ useSeoMeta({
 
 <template>
   <div class="flex flex-col items-center gap-6 h-full w-full relative">
-    <NuxtLink to="/" class="absolute rotate-180 left-0 opacity-50 hover:opacity-100 transition-opacity">
+    <NuxtLink v-if="!telegram.isTelegram.value" to="/" class="absolute rotate-180 left-0 opacity-50 hover:opacity-100 transition-opacity">
       <IconArrow />
     </NuxtLink>
 
@@ -100,7 +139,14 @@ useSeoMeta({
 
     <span v-if="currentSpread?.cardsCount" class="text-sm opacity-70">{{ selectedCards.length }}/{{ currentSpread?.cardsCount || 0 }}</span>
 
-    <SpreadAgreements v-if="isComplete" :disasbled="isPayBtnDisabled" :error="isPaymentError" @paySpread="paySpread" />
+    <SpreadAgreements
+      v-if="isComplete"
+      :disasbled="isPayBtnDisabled || (telegram.isTelegram.value && telegram.balance.value === 0)"
+      :error="isPaymentError"
+      :telegram-free="telegram.isTelegram.value"
+      :telegram-balance="telegram.balance.value"
+      @paySpread="paySpread"
+    />
 
     <div v-else class="text-center">
       Выберите карты из веера и они займут свои позиции в раскладе<br>

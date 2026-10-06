@@ -3,6 +3,8 @@
 interface IAgreementsProps {
   disasbled?: boolean
   error?: boolean
+  telegramFree?: boolean
+  telegramBalance?: number | null
 }
 
 const props = defineProps<IAgreementsProps>()
@@ -47,15 +49,16 @@ const goToPayment = () => {
     <div class="text-center">
       Вы&nbsp;можете ознакомиться со&nbsp;значением карты, нажав на&nbsp;неё<br />
       или получить развернутое трактование от ИИ<br />
-      После успешной оплаты нажмите "Вернуться на сайт"<br />
-      и Вы получите детальный разбор
+      <template v-if="telegramFree">В Telegram первый подробный расклад бесплатный</template>
+      <template v-else>После успешной оплаты нажмите "Вернуться на сайт"<br />
+      и Вы получите детальный разбор</template>
     </div>
     <button
       @click="goToPayment"
       class="py-2 px-4 border rounded-2xl w-fit mx-auto transition-opacity cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
       :disabled="isDisabled"
     >
-      Узнать подробнее за 249 ₽
+      {{ telegramFree ? (telegramBalance === 0 ? 'Бесплатный расклад уже использован' : 'Получить бесплатный расклад') : 'Узнать подробнее за 249 ₽' }}
     </button>
     <div v-if="error" class="text-red-500 text-center">Что-то случилось, попробуйте ещё раз</div>
     <div class="checkbox-wrapper">
